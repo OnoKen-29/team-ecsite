@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+
+<link href="/css/reset.css" th:href="@{/css/reset.css}" rel="stylesheet" />
+<link href="/css/style.css" th:href="@{/css/style.css}" rel="stylesheet" />
+
+<title>origami interior</title>
+
+</head>
+<body>
+
+<header th:insert="fragments/page_header::pageHeader"></header>
+
+<main>
+
+	<div class="container">
+		<table class="top">
+			<caption><label th:text="${MstProduct.productName}+'（'+${MstProduct.productNameKana}+'）'" /></caption>
+			<tr>
+				<th>画像</th><th>価格</th><th>発売元</th><th>発売年月日</th>
+			</tr>
+			<tr>
+				<td class="imageDetail">
+					<img class="itemImageDetail" th:src="@{{imagePath} (imagePath=${MstProduct.imageFullPath}) }" alt="" />
+				</td>
+				<td class="number" th:text="${MstProduct.price} + '円'"/>
+				<td th:text="${MstProduct.releaseCompany}"/>
+				<td th:text="${MstProduct.releaseDate}"/>
+			</tr>
+		</table>
+		<label id="description">商品説明</label>
+		<textarea cols="75" rows="5" readonly th:text="${MstProduct.productDescription}" ></textarea>
+			
+		<hr />
+		<div class="buttonArea">
+			<label>購入個数</label>
+			<input type="number" id="productCount" name="productCount" class="count number" value="0" min="0" step="1"/>
+			<input type="hidden" id="productId" name="productId" th:value="${MstProduct.id}"/>
+			<button class="cartButton">カートに追加</button>
+		</div>
+	</div>
+	
+	<script>
+	$(() => {
+		$('.cartButton').on('click', cart);
+	});
+	let cart = (event) => {
+		let productId = $('#productId').val();
+		let productCount = $('#productCount').val();
+		
+		addCart(productId, productCount);
+	};
+</script>
+	
+</main>
+
+</body>
+</html>
